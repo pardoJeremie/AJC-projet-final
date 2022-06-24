@@ -8,7 +8,7 @@ case "$1" in
 	printf "Starting leds: "
 	echo heartbeat > /sys/class/leds/led0/trigger && \
 	echo none > /sys/class/leds/led1/trigger && \
-	echo 0 > /sys/class/leds/led1/brightness && \
+	echo 0 > /sys/class/leds/led1/brightness
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 	;;
   stop)
@@ -16,7 +16,7 @@ case "$1" in
 	echo none > /sys/class/leds/led0/trigger && \
 	echo 0 > /sys/class/leds/led0/brightness && \
 	echo none > /sys/class/leds/led1/trigger && \
-	echo 0 > /sys/class/leds/led1/brightness && \
+	echo 0 > /sys/class/leds/led1/brightness
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 	;;
   *)
