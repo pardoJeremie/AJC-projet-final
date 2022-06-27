@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# Start the mountp4...
+#
+
+case "$1" in
+  start)
+	printf "Mounting /dev/mmcblk0p4: "
+	mount -o sync /dev/mmcblk0p4 /data
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+	;;
+  stop)
+	printf "Unmounting /dev/mmcblk0p4: "
+	umount /data 
+	[ $? = 0 ] && echo "ok" ||  echo "FAIL"
+	;;
+  *)
+	echo "Usage: $0 {start|stop}"
+	exit 1
+esac
+
+exit $?
+
