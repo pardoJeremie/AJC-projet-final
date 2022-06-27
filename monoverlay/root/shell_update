@@ -1,11 +1,7 @@
 #!/bin/sh
 
-mount /dev/mmcblk0p1 /mnt/
-
-var=$(cat /proc/cmdline | grep -o  root=/dev/mmcblk0p2) 
-
-[ -z "$var" ] && (echo "update switch to: mmcblk0p2"; scp dev@10.30.1.237:buildroot/buildroot-2022.02.2/output/images/rootfs.ext2 /dev/mmcblk0p2; sed -i -e 's/mmcblk0p3/mmcblk0p2/' /mnt/cmdline.txt) || (echo "update switch to: mmcblk0p3";  scp dev@10.30.1.237:buildroot/buildroot-2022.02.2/output/images/rootfs.ext2 /dev/mmcblk0p3; sed -i -e 's/mmcblk0p2/mmcblk0p3/' /mnt/cmdline.txt)
-
-umount /mnt/
-
+mount /dev/mmcblk0p1 /mnt/ && \
+var=$(cat /proc/cmdline | grep -o  root=/dev/mmcblk0p2) && \
+[ -z "$var" ] && (echo "update switch to: mmcblk0p2"; scp dev@10.30.1.237:buildroot/buildroot-2022.02.2/output/images/rootfs.ext2 /dev/mmcblk0p2; sed -i -e 's/mmcblk0p3/mmcblk0p2/' /mnt/cmdline.txt) || (echo "update switch to: mmcblk0p3";  scp dev@10.30.1.237:buildroot/buildroot-2022.02.2/output/images/rootfs.ext2 /dev/mmcblk0p3; sed -i -e 's/mmcblk0p2/mmcblk0p3/' /mnt/cmdline.txt) && \
+umount /mnt/ && \
 reboot
