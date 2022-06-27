@@ -10,7 +10,7 @@ else
     exec('echo 0 > /sys/class/gpio/gpio17/value');
 }
 
-header('Location:/test.php');
+header('Location:/control.php');
 exit;
 
 ?>
