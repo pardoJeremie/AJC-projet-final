@@ -9,4 +9,6 @@ var=$(cat /proc/cmdline | grep -o  root=/dev/mmcblk0p2)
 
 umount /mnt/
 
+echo "reboot"
+
 reboot

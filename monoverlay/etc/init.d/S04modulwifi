@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# Start the modul wifi...
+#
+
+case "$1" in
+  start)
+    printf "starting the modul wifi: "
+    modprobe brcmfmac
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+  stop)
+    printf "Stopping modul wifi: "
+    modprobe -r brcmfmac
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+esac
+
+exit $?        

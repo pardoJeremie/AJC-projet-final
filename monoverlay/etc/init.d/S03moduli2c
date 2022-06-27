@@ -5,13 +5,14 @@
 
 case "$1" in
   start)
+printf "starting modul i2c: "
     modprobe i2c-bcm2835 && \
     #modprobe i2c-dev && \
     modprobe bmp280-i2c
     [ $? = 0 ] && echo "OK" || echo "FAIL"
     ;;
   stop)
-    printf "Stopping moduli2c: "
+    printf "Stopping modul i2c: "
     modprobe -r i2c-bcm2835 && \
     #modprobe -r i2c-dev && \
     modprobe -r bmp280-i2c
