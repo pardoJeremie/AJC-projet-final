@@ -4,11 +4,11 @@ Help()
 {
    # Display Help
    echo "Make the project and update the m5sum of the desired filesystem."
-   echo "When the m5sum of rootfs.ext2 or boot.vfat, connected weather stations will try to update their version. "
+   echo "When the m5sum of rootfs.ext4 or boot.vfat, connected weather stations will try to update their version. "
    echo
    echo "Syntax: updateversion [-r|b]"
    echo "options: (default -r)"
-   echo "r   update the md5sum of rootfs.ext2 ."
+   echo "r   update the md5sum of rootfs.ext4 ."
    echo "b   update the md5sum of boot.vfat ."
    echo
 }
@@ -17,7 +17,7 @@ Help()
 
 md5sumrootfs ()
 {
-   md5sum /home/dev/buildroot/buildroot-2022.02.2/output/images/rootfs.ext2 | awk '{ print $1 }'  > /home/dev/buildroot/UPDATE/md5sum.rootfs
+   md5sum /home/dev/buildroot/buildroot-2022.02.2/output/images/rootfs.ext4 | awk '{ print $1 }'  > /home/dev/buildroot/UPDATE/md5sum.rootfs
 }
 
 # md5sumboot
@@ -42,7 +42,7 @@ else
        h) # display Help
             Help
             exit;;
-       r) # update the md5sum of rootfs.ext2
+       r) # update the md5sum of rootfs.ext4
             varmd5sumrootfs="true"  
             ;;
        b) # update the md5sum of boot.vfat
