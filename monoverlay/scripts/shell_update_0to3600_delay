@@ -1,0 +1,4 @@
+#!/bin/sh
+
+sleep $(($RANDOM % 3600))s
+echo | /scripts/shell_update
