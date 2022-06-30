@@ -18,7 +18,8 @@ Help()
 # md5sumrootfs
 
 md5sumrootfs ()
-{	
+{
+   echo "Copying of rootfs.ext4 in UPDATE and calculating its md5sum"
    cp /home/dev/buildroot/buildroot-2022.02.2/output/images/rootfs.ext4 /home/dev/buildroot/UPDATE/
    md5sum /home/dev/buildroot/buildroot-2022.02.2/output/images/rootfs.ext4 | awk '{ print $1 }'  > /home/dev/buildroot/UPDATE/md5sum.rootfs
 }
@@ -27,6 +28,7 @@ md5sumrootfs ()
 
 md5sumboot ()
 {
+   echo "Copying of boot.vfat in UPDATE and calculating its md5sum"
    cp /home/dev/buildroot/buildroot-2022.02.2/output/images/boot.vfat /home/dev/buildroot/UPDATE/
    md5sum /home/dev/buildroot/buildroot-2022.02.2/output/images/boot.vfat | awk '{ print $1 }'  > /home/dev/buildroot/UPDATE/md5sum.boot
 }
@@ -61,12 +63,12 @@ fi
 
 (cd /home/dev/buildroot/buildroot-2022.02.2/; make)
 
-if [ "$varmd5sumrootfs" == "true" ]
+if [ ! -z "$varmd5sumrootfs" ]
 then
    md5sumrootfs
 fi
 
-if [ "$varmd5sumboot" == "true" ]
+if [ ! -z "$varmd5sumboot" ]
 then
    md5sumboot
 fi
