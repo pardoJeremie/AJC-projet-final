@@ -1,14 +1,153 @@
-
 #!/bin/sh
 
-mount /dev/mmcblk0p1 /mnt/
+# update boot
 
-var=$(cat /proc/cmdline | grep -o  root=/dev/mmcblk0p2)
+updateboot ()     
+{
 
-[ -z "$var" ] && (echo "update switch to: mmcblk0p2"; scp dev@10.30.1.237:buildroot/buildroot-2022.02.2/output/images/rootfs.ext2 /dev/mmcblk0p2; sed -i -e 's/mmcblk0p3/mmcblk0p2/' /mnt/cmdline.txt) || (echo "update switch to: mmcblk0p3";  scp dev@10.30.1.237:buildroot/buildroot-2022.02.2/output/images/rootfs.ext2 /dev/mmcblk0p3; sed -i -e 's/mmcblk0p2/mmcblk0p3/' /mnt/cmdline.txt)
+   scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/boot.vfat /data/boot.vfat; 
+   md5sum /data/boot.vfat | awk '{ print $1 }'  > /data/version/new.md5sum.boot 
+   if  [ "$( cat /data/version/dev.md5sum.boot )" != "$( cat /data/version/new.md5sum.boot )" ]
+   then
+      scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/boot.vfat /data/boot.vfat; 
+      md5sum /data/boot.vfat | awk '{ print $1 }' > /data/version/new.md5sum.boot
 
-umount /mnt/
+      if  [ "$( cat /data/version/dev.md5sum.boot )" != "$( cat /data/version/new.md5sum.boot )" ]
+      then
+         scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/boot.vfat /data/boot.vfat; 
+         md5sum /data/boot.vfat | awk '{ print $1 }' > /data/version/new.md5sum.boot
 
-echo "reboot"
+         if  [ "$( cat /data/version/dev.md5sum.boot )" != "$( cat /data/version/new.md5sum.boot )" ]
+         then
+            echo "fail scp boot.vfat into mmcblk0p1: $(date)"
+            exit
+         fi
+      fi
+   fi
+   
+   cat /data/version/new.md5sum.boot > /data/version/md5sum.boot
+   
+   cp /data/boot.vfat /dev/mmcblk0p1 #copy the new boot into mmcblk0p1
 
-reboot
+   echo "boot updated: $(date)"
+
+   if [ -z "$onmmcblk0p2" ]
+   then
+      echo "change to current partition mmcblk0p3"
+      mount /dev/mmcblk0p1 /mnt/
+      sed -i -e 's/mmcblk0p2/mmcblk0p3/' /mnt/cmdline.txt;
+      umount /mnt/
+   fi
+}
+
+# update rootfs 
+
+updateononmmcblk0p2 ()     
+{
+   scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/rootfs.ext4 /dev/mmcblk0p2;
+   md5sum /dev/mmcblk0p2 | awk '{ print $1 }'  > /data/version/new.md5sum.rootfs
+
+   if  [ "$( cat /data/version/dev.md5sum.rootfs )" != "$( cat /data/version/new.md5sum.rootfs )" ]
+   then
+      scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/rootfs.ext4 /dev/mmcblk0p2;
+      md5sum /dev/mmcblk0p2 | awk '{ print $1 }' > /data/version/new.md5sum.rootfs
+
+      if  [ "$( cat /data/version/dev.md5sum.rootfs )" != "$( cat /data/version/new.md5sum.rootfs )" ]
+      then
+         scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/rootfs.ext4 /dev/mmcblk0p2;
+         md5sum /dev/mmcblk0p2 | awk '{ print $1 }' > /data/version/new.md5sum.rootfs
+
+         if  [ "$( cat /data/version/dev.md5sum.rootfs )" != "$( cat /data/version/new.md5sum.rootfs )" ]
+         then
+
+            echo "fail scp roofs.ext4 into mmcblk0p2: $(date)"
+            exit
+         fi
+      fi
+   fi
+   
+   cat /data/version/new.md5sum.rootfs > /data/version/md5sum.rootfs
+
+   echo "rootfs updated into mmcblk0p2: $(date)"
+
+   mount /dev/mmcblk0p1 /mnt/
+   sed -i -e 's/mmcblk0p3/mmcblk0p2/' /mnt/cmdline.txt
+   umount /mnt/
+   
+   echo "change to desired partition mmcblk0p2"
+}
+
+updateononmmcblk0p3 ()     
+{
+   scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/rootfs.ext4 /dev/mmcblk0p3; 
+   md5sum /dev/mmcblk0p3 | awk '{ print $1 }'  > /data/version/new.md5sum.rootfs
+
+   if  [ "$( cat /data/version/dev.md5sum.rootfs )" != "$( cat /data/version/new.md5sum.rootfs )" ]
+   then
+      scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/rootfs.ext4 /dev/mmcblk0p3; 
+      md5sum /dev/mmcblk0p3 | awk '{ print $1 }' > /data/version/new.md5sum.rootfs
+      
+      if  [ "$( cat /data/version/dev.md5sum.rootfs )" != "$( cat /data/version/new.md5sum.rootfs )" ]
+      then
+         scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/rootfs.ext4 /dev/mmcblk0p3; 
+         md5sum /dev/mmcblk0p3 | awk '{ print $1 }' > /data/version/new.md5sum.rootfs
+         
+         if  [ "$( cat /data/version/dev.md5sum.rootfs )" != "$( cat /data/version/new.md5sum.rootfs )" ]
+         then
+
+            echo "fail scp roofs.ext4 into mmcblk0p3: $(date)"
+            exit
+         fi
+      fi
+   fi
+
+   cat /data/version/new.md5sum.rootfs > /data/version/md5sum.rootfs
+   
+   echo "rootfs updated into mmcblk0p3: $(date)"
+
+   mount /dev/mmcblk0p1 /mnt/
+   sed -i -e 's/mmcblk0p2/mmcblk0p3/' /mnt/cmdline.txt
+   umount /mnt/
+   
+   echo "change to desired partition mmcblk0p3"
+}
+
+############################################################ 
+# Main program                                             #  
+############################################################ 
+
+#get last version md5sum
+scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/md5sum.rootfs /data/version/dev.md5sum.rootfs
+scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/md5sum.boot /data/version/dev.md5sum.boot
+
+#get roofts current partition
+onmmcblk0p3=$(cat /proc/cmdline | grep -o  root=/dev/mmcblk0p2)
+
+#update boot
+if [ "$( cat /data/version/md5sum.boot )" != "$( cat /data/version/dev.md5sum.boot )" ]
+then
+   varreboot="true"
+   updateboot
+fi
+
+#update rootfs
+if [ "$( cat /data/version/md5sum.rootfs )" != "$( cat /data/version/dev.md5sum.rootfs )" ]
+then
+   varreboot="true"
+   if [ -z "$onmmcblk0p3" ]
+   then
+      updateononmmcblk0p2
+   else
+      updateononmmcblk0p3
+   fi
+fi
+
+#reboot
+if [ ! -z "$varreboot" ]
+then
+   echo "reboot"
+   reboot
+else
+   echo "up to date: $(date)"
+fi
+
