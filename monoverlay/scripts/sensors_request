@@ -1,8 +1,8 @@
 #!/bin/sh
 
-NOW=$(date +"%Y-%m-%d")
+#NOW=$(date +"%Y-%m-%d")
 
-echo ".. The Date is : $NOW"
+#echo ".. The Date is : $NOW"
 
 if [ ! -z "$(cat /tmp/ntplog.tmp | grep "setting time to")" ]
 #if [ [ ! -z "$(cat /tmp/ntplog.tmp | grep "setting time to")" ] && echo 1 || echo 0 ]

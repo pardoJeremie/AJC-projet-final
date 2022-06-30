@@ -1,5 +1,8 @@
 #!/bin/sh
 
-echo "clearing .. Table $2 in DataBase $1 "
+schema="bmp180"
+db="/data/database.db"
 
-sqlite3 $1 "DELETE FROM $2;"
+echo "clearing .. Table $schema in DataBase $db "
+
+sqlite3 $db "DELETE FROM $schema;"
