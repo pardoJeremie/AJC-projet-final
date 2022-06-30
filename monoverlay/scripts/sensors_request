@@ -1,0 +1,25 @@
+#!/bin/sh
+
+NOW=$(date +"%Y-%m-%d")
+
+echo ".. The Date is : $NOW"
+
+if [ ! -z "$(cat /tmp/ntplog.tmp | grep "setting time to")" ]
+#if [ [ ! -z "$(cat /tmp/ntplog.tmp | grep "setting time to")" ] && echo 1 || echo 0 ]
+#if [ $(date +%Y) -gt 2021 ]
+#if [ 1970 -eq 1970 ]
+then
+#	echo .. date to sync with ntpd ..         
+	
+#        echo ".. sync on local : ntpd -p localhost"
+#        ntpd -p localhost 
+#	date "+%y-%m-%d %H:%M:%S " 
+#else
+	sqlite3 /data/database.db "INSERT INTO bmp180 (pression, temperature, date) \
+		VALUES( $(cat /sys/bus/iio/devices/iio\:device0/in_pressure_input), \
+		$(cat /sys/bus/iio/devices/iio\:device0/in_temp_input)/1000, \
+		'$(date "+%Y-%m-%d %H:%M:%S")' )"
+
+	#sqlite3 /data/database.db "select * from bmp180"
+
+fi

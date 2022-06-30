@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "clearing .. Table $2 in DataBase $1 "
+
+sqlite3 $1 "DELETE FROM $2;"
