@@ -16,7 +16,8 @@ Help()
 # md5sumrootfs
 
 md5sumrootfs ()
-{
+{	
+   cp /home/dev/buildroot/buildroot-2022.02.2/output/images/rootfs.ext4 /home/dev/buildroot/UPDATE/
    md5sum /home/dev/buildroot/buildroot-2022.02.2/output/images/rootfs.ext4 | awk '{ print $1 }'  > /home/dev/buildroot/UPDATE/md5sum.rootfs
 }
 
@@ -24,6 +25,7 @@ md5sumrootfs ()
 
 md5sumboot ()
 {
+   cp /home/dev/buildroot/buildroot-2022.02.2/output/images/boot.vfat /home/dev/buildroot/UPDATE/
    md5sum /home/dev/buildroot/buildroot-2022.02.2/output/images/boot.vfat | awk '{ print $1 }'  > /home/dev/buildroot/UPDATE/md5sum.boot
 }
 
