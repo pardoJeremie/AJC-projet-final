@@ -56,7 +56,7 @@ else
             ;;
          \?) # Invalid arg
            echo "Error: Invalid arg"
-            exit;;
+            exit 1;;
       esac
    done 
 fi

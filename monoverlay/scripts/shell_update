@@ -21,7 +21,7 @@ updateboot ()
          if  [ "$( cat /tmp/dev.md5sum.boot )" != "$( cat /tmp/new.md5sum.boot )" ]
          then
             echo "fail scp boot.vfat into /tmp: $(date)"
-            exit
+            exit 1
          fi
       fi
    fi
@@ -63,7 +63,7 @@ updateononmmcblk0p2 ()
          if  [ "$( cat /tmp/dev.md5sum.rootfs )" != "$( cat /tmp/new.md5sum.rootfs )" ]
          then
             echo "fail scp roofs.ext4 into mmcblk0p2: $(date)"
-            exit
+            exit 1
          fi
       fi
    fi
@@ -97,7 +97,7 @@ updateononmmcblk0p3 ()
          if  [ "$( cat /tmp/dev.md5sum.rootfs )" != "$( cat /tmp/new.md5sum.rootfs )" ]
          then
             echo "fail scp roofs.ext4 into mmcblk0p3: $(date)"
-            exit
+            exit 1
          fi
       fi
    fi
