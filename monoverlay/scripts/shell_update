@@ -5,29 +5,32 @@
 updateboot ()     
 {
 
-   scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/boot.vfat /data/boot.vfat; 
-   md5sum /data/boot.vfat | awk '{ print $1 }'  > /data/version/new.md5sum.boot 
-   if  [ "$( cat /data/version/dev.md5sum.boot )" != "$( cat /data/version/new.md5sum.boot )" ]
+   scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/boot.vfat /tmp/boot.vfat; 
+   md5sum /tmp/boot.vfat | awk '{ print $1 }'  > /tmp/new.md5sum.boot 
+   
+   if  [ "$( cat /tmp/dev.md5sum.boot )" != "$( cat /tmp/new.md5sum.boot )" ]
    then
-      scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/boot.vfat /data/boot.vfat; 
-      md5sum /data/boot.vfat | awk '{ print $1 }' > /data/version/new.md5sum.boot
+      scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/boot.vfat /tmp/boot.vfat; 
+      md5sum /tmp/boot.vfat | awk '{ print $1 }' > /tmp/new.md5sum.boot
 
-      if  [ "$( cat /data/version/dev.md5sum.boot )" != "$( cat /data/version/new.md5sum.boot )" ]
+      if  [ "$( cat /tmp/dev.md5sum.boot )" != "$( cat /tmp/new.md5sum.boot )" ]
       then
-         scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/boot.vfat /data/boot.vfat; 
-         md5sum /data/boot.vfat | awk '{ print $1 }' > /data/version/new.md5sum.boot
+         scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/boot.vfat /tmp/boot.vfat; 
+         md5sum /tmp/boot.vfat | awk '{ print $1 }' > /tmp/new.md5sum.boot
 
-         if  [ "$( cat /data/version/dev.md5sum.boot )" != "$( cat /data/version/new.md5sum.boot )" ]
+         if  [ "$( cat /tmp/dev.md5sum.boot )" != "$( cat /tmp/new.md5sum.boot )" ]
          then
-            echo "fail scp boot.vfat into mmcblk0p1: $(date)"
+            echo "fail scp boot.vfat into /tmp: $(date)"
             exit
          fi
       fi
    fi
    
-   cat /data/version/new.md5sum.boot > /data/version/md5sum.boot
+   cat /tmp/new.md5sum.boot > /data/version/md5sum.boot
    
-   cp /data/boot.vfat /dev/mmcblk0p1 #copy the new boot into mmcblk0p1
+   echo "copy of /tmp/boot.vfat into /dev/mmcblk0p1"
+   
+   cp /tmp/boot.vfat /dev/mmcblk0p1
 
    echo "boot updated: $(date)"
 
@@ -45,28 +48,27 @@ updateboot ()
 updateononmmcblk0p2 ()     
 {
    scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/rootfs.ext4 /dev/mmcblk0p2;
-   md5sum /dev/mmcblk0p2 | awk '{ print $1 }'  > /data/version/new.md5sum.rootfs
+   md5sum /dev/mmcblk0p2 | awk '{ print $1 }'  > /tmp/new.md5sum.rootfs
 
-   if  [ "$( cat /data/version/dev.md5sum.rootfs )" != "$( cat /data/version/new.md5sum.rootfs )" ]
+   if  [ "$( cat /tmp/dev.md5sum.rootfs )" != "$( cat /tmp/new.md5sum.rootfs )" ]
    then
       scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/rootfs.ext4 /dev/mmcblk0p2;
-      md5sum /dev/mmcblk0p2 | awk '{ print $1 }' > /data/version/new.md5sum.rootfs
+      md5sum /dev/mmcblk0p2 | awk '{ print $1 }' > /tmp/new.md5sum.rootfs
 
-      if  [ "$( cat /data/version/dev.md5sum.rootfs )" != "$( cat /data/version/new.md5sum.rootfs )" ]
+      if  [ "$( cat /tmp/dev.md5sum.rootfs )" != "$( cat /tmp/new.md5sum.rootfs )" ]
       then
          scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/rootfs.ext4 /dev/mmcblk0p2;
-         md5sum /dev/mmcblk0p2 | awk '{ print $1 }' > /data/version/new.md5sum.rootfs
+         md5sum /dev/mmcblk0p2 | awk '{ print $1 }' > /tmp/new.md5sum.rootfs
 
-         if  [ "$( cat /data/version/dev.md5sum.rootfs )" != "$( cat /data/version/new.md5sum.rootfs )" ]
+         if  [ "$( cat /tmp/dev.md5sum.rootfs )" != "$( cat /tmp/new.md5sum.rootfs )" ]
          then
-
             echo "fail scp roofs.ext4 into mmcblk0p2: $(date)"
             exit
          fi
       fi
    fi
    
-   cat /data/version/new.md5sum.rootfs > /data/version/md5sum.rootfs
+   cat /tmp/new.md5sum.rootfs > /data/version/md5sum.rootfs
 
    echo "rootfs updated into mmcblk0p2: $(date)"
 
@@ -80,28 +82,27 @@ updateononmmcblk0p2 ()
 updateononmmcblk0p3 ()     
 {
    scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/rootfs.ext4 /dev/mmcblk0p3; 
-   md5sum /dev/mmcblk0p3 | awk '{ print $1 }'  > /data/version/new.md5sum.rootfs
+   md5sum /dev/mmcblk0p3 | awk '{ print $1 }'  > /tmp/new.md5sum.rootfs
 
-   if  [ "$( cat /data/version/dev.md5sum.rootfs )" != "$( cat /data/version/new.md5sum.rootfs )" ]
+   if  [ "$( cat /tmp/dev.md5sum.rootfs )" != "$( cat /tmp/new.md5sum.rootfs )" ]
    then
       scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/rootfs.ext4 /dev/mmcblk0p3; 
-      md5sum /dev/mmcblk0p3 | awk '{ print $1 }' > /data/version/new.md5sum.rootfs
+      md5sum /dev/mmcblk0p3 | awk '{ print $1 }' > /tmp/new.md5sum.rootfs
       
-      if  [ "$( cat /data/version/dev.md5sum.rootfs )" != "$( cat /data/version/new.md5sum.rootfs )" ]
+      if  [ "$( cat /tmp/dev.md5sum.rootfs )" != "$( cat /tmp/new.md5sum.rootfs )" ]
       then
          scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/rootfs.ext4 /dev/mmcblk0p3; 
-         md5sum /dev/mmcblk0p3 | awk '{ print $1 }' > /data/version/new.md5sum.rootfs
+         md5sum /dev/mmcblk0p3 | awk '{ print $1 }' > /tmp/new.md5sum.rootfs
          
-         if  [ "$( cat /data/version/dev.md5sum.rootfs )" != "$( cat /data/version/new.md5sum.rootfs )" ]
+         if  [ "$( cat /tmp/dev.md5sum.rootfs )" != "$( cat /tmp/new.md5sum.rootfs )" ]
          then
-
             echo "fail scp roofs.ext4 into mmcblk0p3: $(date)"
             exit
          fi
       fi
    fi
 
-   cat /data/version/new.md5sum.rootfs > /data/version/md5sum.rootfs
+   cat /tmp/new.md5sum.rootfs > /data/version/md5sum.rootfs
    
    echo "rootfs updated into mmcblk0p3: $(date)"
 
@@ -117,21 +118,21 @@ updateononmmcblk0p3 ()
 ############################################################ 
 
 #get last version md5sum
-scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/md5sum.rootfs /data/version/dev.md5sum.rootfs
-scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/md5sum.boot /data/version/dev.md5sum.boot
+scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/md5sum.rootfs /tmp/dev.md5sum.rootfs
+scp dev@10.30.1.237:/home/dev/buildroot/UPDATE/md5sum.boot /tmp/dev.md5sum.boot
 
 #get roofts current partition
 onmmcblk0p3=$(cat /proc/cmdline | grep -o  root=/dev/mmcblk0p2)
 
 #update boot
-if [ "$( cat /data/version/md5sum.boot )" != "$( cat /data/version/dev.md5sum.boot )" ]
+if [ "$( cat /data/version/md5sum.boot )" != "$( cat /tmp/dev.md5sum.boot )" ]
 then
    varreboot="true"
    updateboot
 fi
 
 #update rootfs
-if [ "$( cat /data/version/md5sum.rootfs )" != "$( cat /data/version/dev.md5sum.rootfs )" ]
+if [ "$( cat /data/version/md5sum.rootfs )" != "$( cat /tmp/dev.md5sum.rootfs )" ]
 then
    varreboot="true"
    if [ -z "$onmmcblk0p3" ]
