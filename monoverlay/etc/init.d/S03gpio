@@ -8,7 +8,7 @@ case "$1" in
 	printf "Starting gpio: "
 	echo 17 > /sys/class/gpio/export && \
 	echo out > /sys/class/gpio/gpio17/direction && \
-	chmods go+w /sys/class/gpio/gpio17/value
+	chmod go+w /sys/class/gpio/gpio17/value
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 	;;
   stop)
