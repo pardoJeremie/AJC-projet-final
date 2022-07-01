@@ -30,14 +30,14 @@ updateboot ()
    
    echo "copy of /tmp/boot.vfat into /dev/mmcblk0p1"
    
-   cp /tmp/boot.vfat /dev/mmcblk0p1
+   dd if=/tmp/boot.vfat of=/dev/mmcblk0p1 
 
    echo "boot updated: $(date)"
 
    if [ -z "$onmmcblk0p3" ]
    then
       echo "change to current partition mmcblk0p3"
-      
+
       sync
       mount /dev/mmcblk0p1 /mnt/
       sed -i -e 's/mmcblk0p2/mmcblk0p3/' /mnt/cmdline.txt
