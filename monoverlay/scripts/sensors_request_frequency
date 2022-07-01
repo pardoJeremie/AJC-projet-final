@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ ! $1 ]
+then
+	echo no minutes arg entered !
+
+else 
+	if [ $1 -lt 0 || $1 -gt 59 ]
+	then
+		echo minutes arg should be between 0 - 59
+		exit 1	
+	else
+		echo argument entered is $1
+       		minutes=$1; sed -e "/sensors_request/ s#\*/[0-9]*#*/$minutes#" /data/cron/crontabs/root
+	fi
+fi
+
+#kill "$(ps | grep crond | grep -v grep | awk '{print $1}')" )
