@@ -1,3 +1,5 @@
 #!/bin/sh
 
 test -f "/tmp/restartcron" && kill "$(ps | grep crond | grep -v grep | awk '{print $1}')" && rm /tmp/restartcron
+
+test -f "/tmp/restartwlan0" && (ifdown wlan0;  ifup wlan0; rm /tmp/restartwlan0)
