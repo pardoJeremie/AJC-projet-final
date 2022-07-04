@@ -22,7 +22,7 @@ header("Refresh:20");
 
   <nav>
     <ul >
-      <a href="live.php"  >Live feed</a> | <a href="configuration.php" >Configuration</a> | <a href="documentation.php" >Documentation</a>
+      <a href="live.php"  >Live feed</a> | <a href="configuration.php" >Configuration</a> | <a href="documentation.html" >Documentation</a>
     </ul>
   </nav>
 
