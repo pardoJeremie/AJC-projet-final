@@ -1,6 +1,12 @@
 <?php
   $frequency = exec('cat /data/cron/crontabs/root | grep sensors_request | awk \'{print $1}\' | awk -F  "/" \'{print $2}\' ');
+  $wifiname = exec('cat /etc/wpa_supplicant.conf | grep ssid | awk -F "\"" \'{print $2}\'');
+  $wifipwd = exec('cat /etc/wpa_supplicant.conf | grep \'#psk\' | awk -F "\"" \'{print $2}\'');
   
+  $wifi = exec( 'test -f "/tmp/restartwlan0" && echo -1 || echo 7');
+  if ($wifi != -1) {
+    $wifi = exec(' (ping -c 3 -I wlan0 1.1.1.1; echo $?)');
+  }
 ?>
 
 <!DOCTYPE html>
@@ -9,61 +15,7 @@
 <title>CSS Template</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #f1f1f1;
-}
-
-/* Style the header */
-header {
-  padding: 5px 0 0;
-  text-align: center;
-  font-style: italic;
-  font-size: 25px;
-  color: #666;
-}
-
-/* Create two columns/boxes that floats next to each other */
-nav {
-  margin: auto;
-  width: 600px;
-  padding: 10 0 0px;
-  text-align: center;
-}
-
-/* Style the list inside the menu */
-nav ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.center {
-margin: auto;
-width: 600px;
-background-color: #fff;
-padding: 10px;
-min-height: 700px;
-}
-
-.centertext {
-  text-align: center;
-}
-
-
-
-/* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
-@media (max-width: 600px) {
-  nav, article, .center {
-    width: 100%;
-    height: auto;
-  }
-
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -83,8 +35,12 @@ min-height: 700px;
   <div class="center">
     <h1> Configuration </h1>
 
-    <form method="POST" action="configurationfonc.php">
-    Select Your frequency
+    This page allows you to configure your wifi and the data sampling frequency of the AJC Weather Station.
+
+    <h3> Data sampling frequency </h3>
+
+    <form method="POST" action="configurationfunc.php">
+   <p> The data is sampled every
     <select name="frequency" onchange="this.form.submit()">
         <option value="" disabled>--select--</option>
         <option value="1" <?php echo ($frequency==1 ? 'selected' : ''); ?> >1</option>
@@ -99,7 +55,42 @@ min-height: 700px;
         <option value="20" <?php echo ($frequency==20 ? 'selected' : ''); ?> >20</option>
         <option value="30" <?php echo ($frequency==30 ? 'selected' : ''); ?> >30</option>
     </select>
+    minute(s). </p>
     </form>
+    
+    <h3> WiFi network 
+    <div style=" font-size: 15px; font-style: bold;color: #222;"> 
+    <?php   
+      if ($wifi == 0){
+        echo "You are connected to a wifi network.";
+      }
+      else if ($wifi == -1) {
+        echo "Your wifi network is still initialising.";
+      }
+      else {
+        echo "You aren't connected to any wifi network!";
+      }
+     ?>
+     <div>
+    </h3>
+    <p>
+      When updating to a new WiFi network, wait for a minute for the change to operate then recharge the page.
+    </p>
+    
+    <form action="configurationfunc.php" method="post">
+    <p>
+    <label style = " display: block;" for="username">Username:</label>
+
+      <input type="text" id="username" name="username" value=<?php echo $wifiname; ?>>
+    </p>
+    <p>
+      <label style = " display: block;" for="password">Password:</label>
+      <input type="text" id="password" name="password" value=<?php echo $wifipwd; ?>>
+    </p>
+    <p>
+        <input type="submit" name="Button" class="button" value="Update the WiFi network!" autofocus> 
+    </p>
+  </form>
 </section>
 </body>
 </html>

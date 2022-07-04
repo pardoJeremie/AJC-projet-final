@@ -1,0 +1,3 @@
+#!/bin/sh
+
+test -f "/tmp/restartcron" && kill "$(ps | grep crond | grep -v grep | awk '{print $1}')" && rm /tmp/restartcron
