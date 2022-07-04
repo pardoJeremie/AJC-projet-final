@@ -28,7 +28,7 @@
 
   <nav>
     <ul >
-      <a href="live.php"  >Live feed</a> | <a href="configuration.php" >Configuration</a> | <a href="documentation.html" >Documentation</a>
+      <a href="live.php"  >Live feed</a> | <a href="configuration.php" >Configuration</a> | <a href="documentation.php" >Documentation</a>
     </ul>
   </nav>
 
@@ -74,7 +74,7 @@
      <div>
     </h3>
     <p>
-      When updating to a new WiFi network, wait for a minute for the change to operate then recharge the page.
+      When updating to a new Wi-Fi network, wait a minute for the change to take effect, then reload the page.
     </p>
     
     <form action="configurationfunc.php" method="post">
@@ -88,7 +88,7 @@
       <input type="text" id="password" name="password" value=<?php echo $wifipwd; ?>>
     </p>
     <p>
-        <input type="submit" name="Button" class="button" value="Update the WiFi network!" autofocus> 
+        <input type="submit" name="Button" class="button" value="Update the WiFi network"> 
     </p>
   </form>
 </section>
