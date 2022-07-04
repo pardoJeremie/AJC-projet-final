@@ -1,4 +1,4 @@
 <?php
-header('Location:/control.php');
+header('Location:/live.php');
 exit;
 ?>
