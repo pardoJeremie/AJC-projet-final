@@ -1,0 +1,3 @@
+*/3 * * * * /scripts/sensors_request_frequency 
+0 1 * * * /scripts/shell_update >> /tmp/updatelog.tmp
+* * * * * /scripts/update_cron_wlan0 
