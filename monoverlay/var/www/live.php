@@ -32,6 +32,7 @@ header("Refresh:20");
     </h1>
 
     <p>The live feed give you an update to date view of the last, maximal and lowest temperature and pressure measurement taken by your AJC weather station and provide you a link to download all the data captured by the station.</p>
+    <p> On first startup or after a factory reset, no temperature or pressure may appear if the AJC Weather Station has not yet collected its first measurement. the waiting time before this first measurement can vary from one minute to 30 minutes depending on the data collection rate. </p>
     <p>Data collection rate can be changed in the configuration tab.</p>
 
       <h3>Temperature measurement 
