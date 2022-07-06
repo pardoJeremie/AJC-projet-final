@@ -32,15 +32,14 @@ null::sysinit:/bin/ln -sf /proc/self/fd/2 /dev/stderr
 console::respawn:/sbin/getty -L  console 0 vt100 # GENERIC_SERIAL
 tty1::respawn:/sbin/getty -L  tty1 0 vt100 # HDMI console
 
+# init data directory
+null::once:/scripts/filldatadirectory
 
 # launch ntpd deamon
 null::respawn:/usr/sbin/ntpd -np pool.ntp.org >> /tmp/ntplog.tmp 2>&1 
 
 # launch crond deamon
 null::respawn:/usr/sbin/crond -f -c /data/cron/crontabs >> /tmp/cronlog.tmp 2>&1
-
-# init data directory
-null::once:/scripts/filldatadirectory
 
 # Stuff to do for the 3-finger salute
 #::ctrlaltdel:/sbin/reboot

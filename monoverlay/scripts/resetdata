@@ -1,0 +1,8 @@
+#!/bin/sh  
+
+echo "umount /data"
+umount -f -l /data
+echo "reset /data"
+zcat -c /factoryreset/empty.ext4.gz > /dev/mmcblk0p4
+echo "reboot"
+reboot
