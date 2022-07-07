@@ -70,6 +70,7 @@ int main(int argc, char * argv[])
             system("echo none > /sys/class/leds/led1/trigger");
         if(tactualtime - timeofpoll >= 10) {
             system("echo 1 > /sys/class/leds/led1/brightness");
+	    system("/scripts/resetdata");
         } 
     }
     close(fd);
