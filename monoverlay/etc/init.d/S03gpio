@@ -7,13 +7,19 @@ case "$1" in
   start)
 	printf "Starting gpio: "
 	echo 17 > /sys/class/gpio/export && \
+	echo 27 > /sys/class/gpio/export && \
+	echo 22 > /sys/class/gpio/export && \
 	echo out > /sys/class/gpio/gpio17/direction && \
+	echo out > /sys/class/gpio/gpio27/direction && \
+	echo rising > /sys/class/gpio/gpio22/edge && \
 	chmod go+w /sys/class/gpio/gpio17/value
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 	;;
   stop)
 	printf "Stopping gpio: "
-	echo 17 > /sys/class/gpio/unexport 
+	echo 17 > /sys/class/gpio/unexport && \
+	echo 27 > /sys/class/gpio/unexport && \
+	echo 22 > /sys/class/gpio/unexport && \
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 	;;
   *)

@@ -10,7 +10,7 @@ all: $(TARGETS) rising
 	$(CC) $(CFLAGS) $(LFLAGS) -o $@ $<
 
 rising: rising.c
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@.o $<
 
 clean:
 	$(RM) $(TARGETS)

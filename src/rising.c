@@ -15,6 +15,7 @@ Lancer le programme
 
 int main(int argc, char * argv[])
 {
+    sleep(10); //attendre que les gpios soient init.
     int fd;
     struct pollfd  fds;
     char value;
