@@ -2,12 +2,15 @@ CFLAGS = -O2 -mfpu=vfp -mfloat-abi=hard -w -g
 LFLAGS = -lcgic
 CROSS_COMPILE = ../buildroot-2022.02.2/output/host/bin/arm-buildroot-linux-uclibcgnueabihf-
 CC = $(CROSS_COMPILE)gcc
-TARGETS = $(patsubst %.c,%.cgi,$(wildcard *.c))
+TARGETS = $(patsubst %.c,%.cgi,$(wildcard ind*.c))
 
-all: $(TARGETS)
+all: $(TARGETS) rising
 
 %.cgi: %.c
 	$(CC) $(CFLAGS) $(LFLAGS) -o $@ $<
+
+rising: rising.c
+	$(CC) $(CFLAGS) -o $@ $<
 
 clean:
 	$(RM) $(TARGETS)
