@@ -41,16 +41,15 @@ int cgiMain() {
 	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 
 	while (sqlite3_step(stmt) != SQLITE_DONE) {
-		char utc[MAX_STR_DATE_SIZE];
+		//char utc[MAX_STR_DATE_SIZE];
 		int epoc = sqlite3_column_int(stmt, 0);
 
 		// UTC date in ISO8601 format
-		strftime(utc, MAX_STR_DATE_SIZE, "%FT%TZ", localtime(&epoc));
+		//strftime(utc, MAX_STR_DATE_SIZE, "%FT%TZ", localtime(&epoc));
 
-		fprintf(cgiOut, "%c\n\t{\"date\": \"%s\", \"iso8601\": \"%s\", \"temperature\": %f, \"pression\": %f}",
+		fprintf(cgiOut, "%c\n\t{\"date\": \"%s\", \"temperature\": %f, \"pression\": %f}",
 				comma,
 				sqlite3_column_text(stmt, 2),
-				utc,
 				sqlite3_column_double(stmt, 1),
 				sqlite3_column_double(stmt, 0)
 		       );
