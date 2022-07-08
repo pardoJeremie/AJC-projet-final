@@ -1,5 +1,5 @@
 CFLAGS = -O2 -mfpu=vfp -mfloat-abi=hard -w -g
-LFLAGS = -lcgic
+LFLAGS = -lcgic -lsqlite3
 CROSS_COMPILE = ../buildroot-2022.02.2/output/host/bin/arm-buildroot-linux-uclibcgnueabihf-
 CC = $(CROSS_COMPILE)gcc
 TARGETS = $(patsubst %.c,%.cgi,$(wildcard ind*.c))

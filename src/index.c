@@ -1,11 +1,11 @@
-#include <cgic.h>
+#include "cgic.h"
 #include <sqlite3.h>
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_SQL_REQUEST_SIZE 512
-#define MAX_SQL_OPTION_SIZE 128
+#define MAX_SQL_REQUEST_SIZE 32
+#define MAX_SQL_OPTION_SIZE 32
 #define MAX_STR_DATE_SIZE 32
 
 int cgiMain() {
@@ -25,23 +25,17 @@ int cgiMain() {
 	sqlite3 *db;
 	sqlite3_stmt *stmt;
 
-	int rc = sqlite3_open("/data/mesures.sqlite3", &db);
+	int rc = sqlite3_open("/data/database.db", &db);
 	if (rc != SQLITE_OK) {
 		fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		return 1;
 	}
 
-	snprintf(sql, MAX_SQL_REQUEST_SIZE, "SELECT temperature.epoc_date AS epoc, \
-			temperature.temperature AS temp, \
-			pression.pression AS press \
-			FROM temperature \
-			INNER JOIN pression ON temperature.epoc_date=pression.epoc_date \
-			ORDER by temperature.epoc_date%s",
+	snprintf(sql, MAX_SQL_REQUEST_SIZE, "SELECT * FROM bmp180 %s",
 			slimit
 		);
 
-	// OUTPUT DATAS IN JSON FORMAT
 	fprintf(cgiOut, "[");
 
 	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
@@ -53,12 +47,12 @@ int cgiMain() {
 		// UTC date in ISO8601 format
 		strftime(utc, MAX_STR_DATE_SIZE, "%FT%TZ", localtime(&epoc));
 
-		fprintf(cgiOut, "%c\n\t{\"epoc\": %d, \"iso8601\": \"%s\", \"temperature\": %f, \"pression\": %f}",
+		fprintf(cgiOut, "%c\n\t{\"date\": \"%s\", \"iso8601\": \"%s\", \"temperature\": %f, \"pression\": %f}",
 				comma,
-				sqlite3_column_int(stmt, 0),
+				sqlite3_column_text(stmt, 2),
 				utc,
-				sqlite3_column_double(stmt, 1)/1000,
-				sqlite3_column_double(stmt, 2)
+				sqlite3_column_double(stmt, 1),
+				sqlite3_column_double(stmt, 0)
 		       );
 		comma = ',';
 	}
@@ -70,3 +64,5 @@ int cgiMain() {
 
 	return 0;
 }
+
+
