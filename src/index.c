@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_SQL_REQUEST_SIZE 32
+#define MAX_SQL_REQUEST_SIZE 232
 #define MAX_SQL_OPTION_SIZE 32
 #define MAX_STR_DATE_SIZE 32
 
